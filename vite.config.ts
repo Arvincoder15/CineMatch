@@ -1,4 +1,3 @@
-// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
@@ -8,7 +7,7 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      // map versioned imports used in src/* to real packages
+      // map versioned specifiers to real package names
       'vaul@1.1.2': 'vaul',
       'sonner@2.0.3': 'sonner',
       'recharts@2.15.2': 'recharts',
@@ -54,10 +53,6 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    outDir: 'dist', // ✅ Vercel expects "dist"
-  },
-  server: {
-    port: 3000,
-    open: true,
+    outDir: 'dist', // Vercel expects "dist"
   },
 })
