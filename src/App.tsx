@@ -10,7 +10,7 @@ import { SessionView } from './components/SessionView';
 import { MatchModal } from './components/MatchModal';
 import { Movie } from './components/MovieCard';
 import { Toaster } from './components/ui/sonner';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner@2.0.3'; // if you removed versioned aliases, change to: 'sonner'
 import { fetchPopularMovies, fetchMoviesByUserPreferences } from './lib/tmdb-api';
 import { Loader2, LogOut } from 'lucide-react';
 import {
@@ -35,6 +35,10 @@ interface Match {
   friends: string[];
 }
 
+// helpers for code UX
+const normalizeCode = (s: string) => (s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+const isValidCode = (s: string) => /^[A-Z0-9]{6}$/.test(s);
+
 export default function App() {
   const [appState, setAppState] = useState<AppState>('auth');
   const [currentView, setCurrentView] = useState<'swipe' | 'matches' | 'ai'>('swipe');
@@ -46,19 +50,22 @@ export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Check for existing user session on mount
+  // Check for existing user/session on mount
   useEffect(() => {
     const user = getCurrentUser();
-    const sessionCode = getCurrentSessionCode();
+    const sessionCodeRaw = getCurrentSessionCode();
 
     if (user) {
       setCurrentUserState(user);
-      if (sessionCode) {
-        const session = getSession(sessionCode);
+      if (sessionCodeRaw) {
+        const code = normalizeCode(sessionCodeRaw);
+        const session = getSession(code);
         if (session) {
           setCurrentSession(session);
           setAppState('app');
         } else {
+          // stale code in storage — clear it so join won’t say "incorrect"
+          clearCurrentSession();
           setAppState('session-setup');
         }
       } else {
@@ -69,14 +76,13 @@ export default function App() {
     }
   }, []);
 
-  // Load movies from TMDB API
+  // Load movies (popular or per-user)
   useEffect(() => {
     const loadMovies = async () => {
       setLoading(true);
       try {
-        // Fetch movies based on user preferences if available
         let movieData: Movie[];
-        if (currentUser && currentUser.genres && currentUser.genres.length > 0) {
+        if (currentUser && currentUser.genres?.length) {
           movieData = await fetchMoviesByUserPreferences(currentUser.genres, 1);
         } else {
           movieData = await fetchPopularMovies(1);
@@ -85,12 +91,10 @@ export default function App() {
       } catch (error) {
         console.error('Error loading movies:', error);
         toast.error('Failed to load movies. Using mock data instead.');
-        // Fallback is handled in fetchPopularMovies
       } finally {
         setLoading(false);
       }
     };
-
     loadMovies();
   }, [currentUser]);
 
@@ -108,28 +112,25 @@ export default function App() {
     }
   };
 
-  // Update matches when session changes
+  // Recompute matches when session or movies change
   useEffect(() => {
     if (currentSession) {
       const sessionMatches = getSessionMatches(currentSession);
-      const matchArray: Match[] = [];
-
+      const list: Match[] = [];
       Object.entries(sessionMatches).forEach(([movieId, usernames]) => {
         const movie = movies.find((m) => m.id === Number(movieId));
-        if (movie) {
-          matchArray.push({ movie, friends: usernames });
-        }
+        if (movie) list.push({ movie, friends: usernames });
       });
-
-      setMatches(matchArray);
+      setMatches(list);
     }
   }, [currentSession, movies]);
 
   const likedMovieObjects = movies.filter((m) => likedMovies.includes(m.id));
 
+  // -------- Auth --------
   const handleLogin = (username: string) => {
     const user: User = {
-      id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: crypto.randomUUID(),
       username,
       genres: [],
       vibe: '',
@@ -139,16 +140,25 @@ export default function App() {
     setAppState('session-setup');
   };
 
+  // -------- Session Setup --------
   const handleCreateSession = () => {
+    // Your flow: collect prefs first, then actually create the room in onComplete
     setAppState('preferences');
   };
 
-  const handleJoinSession = (code: string) => {
+  const handleJoinSession = (codeInput: string) => {
     if (!currentUser) return;
 
+    const code = normalizeCode(codeInput);
+    if (!isValidCode(code)) {
+      toast.error('Session code must be 6 letters/numbers.');
+      return;
+    }
+
+    // Just verify it exists; we add the user after prefs
     const session = getSession(code);
     if (!session) {
-      toast.error('Session not found. Please check the code and try again.');
+      toast.error(`Session not found for ${code}.`);
       return;
     }
 
@@ -156,23 +166,36 @@ export default function App() {
     setAppState('preferences');
   };
 
+  // -------- Preferences Complete (create/join for real) --------
   const handlePreferencesComplete = (genres: string[], vibe: string) => {
     if (!currentUser) return;
 
-    const updatedUser = { ...currentUser, genres, vibe };
+    const updatedUser: User = { ...currentUser, genres, vibe };
     setCurrentUser(updatedUser);
     setCurrentUserState(updatedUser);
 
-    // Create or join session
     if (currentSession) {
-      const session = joinSession(currentSession.code, updatedUser);
-      if (session) {
-        setCurrentSession(session);
-        setAppState('session-view');
+      // user chose to join existing room; now actually join it
+      const res = joinSession(currentSession.code, updatedUser);
+      if (!res.ok) {
+        toast.error(res.reason === 'NOT_FOUND' ? 'Session not found.' : 'Invalid session code.');
+        // clear bad state and send back to setup
+        setCurrentSession(null);
+        clearCurrentSession();
+        setAppState('session-setup');
+        return;
       }
+      setCurrentSession(res.session);
+      setAppState('session-view');
     } else {
-      const newSession = createSession(updatedUser);
-      setCurrentSession(newSession);
+      // create a new room with the updated user profile
+      const res = createSession(updatedUser);
+      if (!res.ok) {
+        toast.error('Storage is unavailable. Please enable it and retry.');
+        setAppState('session-setup');
+        return;
+      }
+      setCurrentSession(res.session);
       setAppState('session-view');
     }
   };
@@ -181,37 +204,42 @@ export default function App() {
     setAppState('app');
   };
 
+  // -------- Swiping --------
   const handleSwipe = (movieId: number, liked: boolean) => {
-    if (!liked || !currentUser || !currentSession) return;
+    if (!currentUser || !currentSession) return;
 
-    const newLikedMovies = [...likedMovies, movieId];
-    setLikedMovies(newLikedMovies);
+    if (!liked) {
+      // you can handle dislikes later if you want
+      return;
+    }
 
-    // Update session preferences
-    updateSessionPreferences(currentSession.code, currentUser.id, newLikedMovies);
+    const newLiked = Array.from(new Set([...likedMovies, movieId]));
+    setLikedMovies(newLiked);
 
-    // Refresh session to get updated preferences
-    const updatedSession = getSession(currentSession.code);
-    if (updatedSession) {
-      setCurrentSession(updatedSession);
+    // Persist likes to session store
+    updateSessionPreferences(currentSession.code, currentUser.id, newLiked);
 
-      // Check for new matches
-      const sessionMatches = getSessionMatches(updatedSession);
+    // Refresh session and check for new matches
+    const refreshed = getSession(currentSession.code);
+    if (refreshed) {
+      setCurrentSession(refreshed);
+      const sessionMatches = getSessionMatches(refreshed);
       const matchedUsers = sessionMatches[movieId];
 
       if (matchedUsers && matchedUsers.length > 1) {
         const movie = movies.find((m) => m.id === movieId);
         if (movie) {
-          const otherUsers = matchedUsers.filter((u) => u !== currentUser.username);
-          if (otherUsers.length > 0) {
-            setMatchModal({ movie, friend: otherUsers[0] });
-            toast.success(`You matched with ${otherUsers.join(', ')}!`);
+          const others = matchedUsers.filter((u) => u !== currentUser.username);
+          if (others.length > 0) {
+            setMatchModal({ movie, friend: others[0] });
+            toast.success(`You matched with ${others.join(', ')}!`);
           }
         }
       }
     }
   };
 
+  // -------- Logout --------
   const handleLogout = () => {
     sessionLogout();
     clearCurrentSession();
@@ -223,6 +251,7 @@ export default function App() {
     setCurrentView('swipe');
   };
 
+  // -------- Render states --------
   if (loading && appState === 'auth') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background">
@@ -232,7 +261,6 @@ export default function App() {
     );
   }
 
-  // Auth flow
   if (appState === 'auth') {
     return (
       <>
@@ -258,10 +286,7 @@ export default function App() {
   if (appState === 'preferences' && currentUser) {
     return (
       <>
-        <GenrePreferences
-          onComplete={handlePreferencesComplete}
-          sessionCode={currentSession?.code}
-        />
+        <GenrePreferences onComplete={handlePreferencesComplete} sessionCode={currentSession?.code} />
         <Toaster />
       </>
     );
@@ -283,8 +308,8 @@ export default function App() {
   // Main app
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header 
-        onNavigate={setCurrentView} 
+      <Header
+        onNavigate={setCurrentView}
         currentView={currentView}
         onApiKeyChange={handleApiKeyChange}
       />
@@ -296,7 +321,7 @@ export default function App() {
           className="p-2 rounded-lg hover:bg-accent transition-colors"
           title="Logout"
         >
-          <LogOut className="w-5 h-5" />
+        <LogOut className="w-5 h-5" />
         </button>
       </div>
 
