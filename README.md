@@ -1,4 +1,4 @@
-# 🎬 CineMatch MVP Website  
+# 🎬 CineMatch  
 
 ![Vite](https://img.shields.io/badge/Vite-6.3-blueviolet?logo=vite)
 ![React](https://img.shields.io/badge/React-18.3-blue?logo=react)
