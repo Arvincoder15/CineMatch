@@ -54,7 +54,6 @@ export default function App() {
   const [totalMatches, setTotalMatches] = useState(0);
   const { showOnboarding, closeOnboarding } = useOnboarding();
 
-  // Check for existing user session on mount
   useEffect(() => {
     const loadInitialState = async () => {
       const user = getCurrentUser();
@@ -81,12 +80,10 @@ export default function App() {
     loadInitialState();
   }, []);
 
-  // Load movies from TMDB API
   useEffect(() => {
     const loadMovies = async () => {
       setLoading(true);
       try {
-        // Fetch movies based on user preferences if available
         let movieData: Movie[];
         if (currentUser && currentUser.genres && currentUser.genres.length > 0) {
           movieData = await fetchMoviesByUserPreferences(currentUser.genres, 1);
@@ -97,7 +94,6 @@ export default function App() {
       } catch (error) {
         console.error('Error loading movies:', error);
         toast.error('Failed to load movies. Using mock data instead.');
-        // Fallback is handled in fetchPopularMovies
       } finally {
         setLoading(false);
       }
@@ -106,7 +102,6 @@ export default function App() {
     loadMovies();
   }, [currentUser]);
 
-  // Keep sessions synced across devices without requiring refreshes.
   useEffect(() => {
     if (!currentSession?.code) {
       return;
@@ -123,14 +118,13 @@ export default function App() {
     );
   }, [currentSession?.code]);
 
-  // Update matches when session changes
   useEffect(() => {
     if (currentSession) {
       const sessionMatches = getSessionMatches(currentSession);
       const matchArray: Match[] = [];
 
       Object.entries(sessionMatches).forEach(([movieId, usernames]) => {
-        const movie = movies.find((m) => m.id === Number(movieId));
+        const movie = movies.find((movieItem) => movieItem.id === Number(movieId));
         if (movie) {
           matchArray.push({ movie, friends: usernames });
         }
@@ -140,11 +134,11 @@ export default function App() {
     }
   }, [currentSession, movies]);
 
-  const likedMovieObjects = movies.filter((m) => likedMovies.includes(m.id));
+  const likedMovieObjects = movies.filter((movie) => likedMovies.includes(movie.id));
 
   const handleLogin = (username: string) => {
     const user: User = {
-      id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `user_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`,
       username,
       genres: [],
       vibe: '',
@@ -159,7 +153,9 @@ export default function App() {
   };
 
   const handleJoinSession = async (code: string) => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
 
     try {
       const session = await getSession(code);
@@ -182,22 +178,22 @@ export default function App() {
   };
 
   const handlePreferencesComplete = async (genres: string[], vibe: string) => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
 
     const updatedUser = { ...currentUser, genres, vibe };
     setCurrentUser(updatedUser);
     setCurrentUserState(updatedUser);
 
     try {
-      // Create or join session
       if (currentSession) {
         const session = await joinSession(currentSession.code, updatedUser);
         if (session) {
           setCurrentSession(session);
           setAppState('session-view');
           setBackendError(false);
-          
-          // Show message if running in local mode
+
           if (session.isLocal) {
             toast.info('Running in local mode. Sessions won\'t sync across devices.', { duration: 5000 });
           }
@@ -209,8 +205,7 @@ export default function App() {
         setCurrentSession(newSession);
         setAppState('session-view');
         setBackendError(false);
-        
-        // Show message if running in local mode
+
         if (newSession.isLocal) {
           toast.info('Running in local mode. Share the session code with friends on the same device.', { duration: 5000 });
         }
@@ -227,28 +222,27 @@ export default function App() {
   };
 
   const handleSwipe = async (movieId: number, liked: boolean) => {
-    if (!liked || !currentUser || !currentSession) return;
+    if (!liked || !currentUser || !currentSession) {
+      return;
+    }
 
     const newLikedMovies = [...likedMovies, movieId];
     setLikedMovies(newLikedMovies);
 
     try {
-      // Update session preferences
       await updateSessionPreferences(currentSession.code, currentUser.id, newLikedMovies);
 
-      // Refresh session to get updated preferences
       const updatedSession = await getSession(currentSession.code);
       if (updatedSession) {
         setCurrentSession(updatedSession);
 
-        // Check for new matches
         const sessionMatches = getSessionMatches(updatedSession);
         const matchedUsers = sessionMatches[movieId];
 
         if (matchedUsers && matchedUsers.length > 1) {
-          const movie = movies.find((m) => m.id === movieId);
+          const movie = movies.find((movieItem) => movieItem.id === movieId);
           if (movie) {
-            const otherUsers = matchedUsers.filter((u) => u !== currentUser.username);
+            const otherUsers = matchedUsers.filter((username) => username !== currentUser.username);
             if (otherUsers.length > 0) {
               const newMatchCount = totalMatches + 1;
               setTotalMatches(newMatchCount);
@@ -260,7 +254,6 @@ export default function App() {
       }
     } catch (error) {
       console.error('Error handling swipe:', error);
-      // Don't show error to user, just log it
     }
   };
 
@@ -322,8 +315,8 @@ export default function App() {
   } else {
     content = (
       <div className="min-h-screen flex flex-col bg-background">
-        <Header 
-          onNavigate={setCurrentView} 
+        <Header
+          onNavigate={setCurrentView}
           currentView={currentView}
           username={currentUser?.username}
           likedMovies={likedMovieObjects}
@@ -331,53 +324,51 @@ export default function App() {
 
         {appState === 'app' && <TrendingBanner movies={movies} />}
 
-        {/* Logout button */}
-      <div className="absolute top-4 right-4 z-50">
-        <button
-          onClick={handleLogout}
-          className="p-2 rounded-lg hover:bg-accent transition-colors"
-          title="Logout"
-        >
-          <LogOut className="w-5 h-5" />
-        </button>
-      </div>
-
-      {loading ? (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading movies from TMDB...</p>
-          </div>
+        <div className="absolute top-4 right-4 z-50">
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg hover:bg-accent transition-colors"
+            title="Logout"
+          >
+            <LogOut className="w-5 h-5" />
+          </button>
         </div>
-      ) : (
-        <>
-          {currentView === 'swipe' && (
-            <SwipeView
-              movies={movies}
-              onSwipe={handleSwipe}
-              sessionCode={currentSession?.code}
-              sessionMemberCount={currentSession?.users.length}
-              matchCount={totalMatches}
-            />
-          )}
-          {currentView === 'ai' && <AIView likedMovies={likedMovieObjects} allMovies={movies} />}
-          {currentView === 'matches' && <MatchesView matches={matches} />}
-        </>
-      )}
 
-      <MatchModal
-        isOpen={matchModal !== null}
-        onClose={() => setMatchModal(null)}
-        movie={matchModal?.movie || null}
-        friendName={matchModal?.friend || ''}
-        matchCount={matchModal?.count}
-      />
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading movies from TMDB...</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            {currentView === 'swipe' && (
+              <SwipeView
+                movies={movies}
+                onSwipe={handleSwipe}
+                sessionCode={currentSession?.code}
+                sessionMemberCount={currentSession?.users.length}
+                matchCount={totalMatches}
+              />
+            )}
+            {currentView === 'ai' && <AIView likedMovies={likedMovieObjects} allMovies={movies} />}
+            {currentView === 'matches' && <MatchesView matches={matches} />}
+          </>
+        )}
 
-      <OnboardingTips
-        isOpen={showOnboarding && appState === 'app'}
-        onClose={closeOnboarding}
-      />
+        <MatchModal
+          isOpen={matchModal !== null}
+          onClose={() => setMatchModal(null)}
+          movie={matchModal?.movie || null}
+          friendName={matchModal?.friend || ''}
+          matchCount={matchModal?.count}
+        />
 
+        <OnboardingTips
+          isOpen={showOnboarding && appState === 'app'}
+          onClose={closeOnboarding}
+        />
       </div>
     );
   }
