@@ -48,7 +48,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5">
+    <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Theme Toggle - Fixed position */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -81,7 +81,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -94,7 +94,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-sky-100 rounded-full blur-3xl"
         />
       </div>
 
@@ -122,13 +122,13 @@ export function AuthView({ onLogin }: AuthViewProps) {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl blur-xl opacity-50"
+                className="absolute inset-0 bg-primary/25 rounded-2xl blur-xl opacity-50"
               />
-              <div className="relative bg-gradient-to-br from-cyan-600 to-teal-500 p-4 rounded-2xl">
+              <div className="relative bg-primary p-4 rounded-2xl">
                 <Film className="w-12 h-12 text-white" />
               </div>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-7xl font-bold text-foreground">
               CineMatch
             </h1>
           </motion.div>
@@ -161,7 +161,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-4 py-2 bg-card/50 backdrop-blur-sm border rounded-full cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-card border rounded-full cursor-pointer"
             >
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
@@ -173,7 +173,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-4 py-2 bg-card/50 backdrop-blur-sm border rounded-full cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-card border rounded-full cursor-pointer"
             >
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
@@ -185,7 +185,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-4 py-2 bg-card/50 backdrop-blur-sm border rounded-full cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-card border rounded-full cursor-pointer"
             >
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
@@ -204,7 +204,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
             transition={{ delay: 0.7 }}
             className="mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600/10 to-amber-500/10 border border-cyan-500/20 rounded-full">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-50 border border-cyan-200 rounded-full">
               <Play className="w-4 h-4 text-cyan-600" />
               <span className="text-sm font-medium">
                 Swipe → Match → Watch Together
@@ -220,9 +220,9 @@ export function AuthView({ onLogin }: AuthViewProps) {
           transition={{ delay: 0.7, type: "spring" }}
           className="w-full max-w-md"
         >
-          <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+          <div className="bg-card border border-border rounded-3xl shadow-2xl p-8 relative overflow-hidden">
             {/* Card glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-amber-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-muted/30 pointer-events-none" />
             
             <div className="relative z-10">
               <div className="text-center mb-8">
@@ -272,7 +272,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
                   <Button
                     type="submit"
                     disabled={!username.trim()}
-                    className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all"
+                    className="w-full h-12 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg transition-all"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
@@ -315,7 +315,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
               whileHover={{ scale: 1.05, y: -5 }}
               className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 text-center hover:shadow-lg transition-all"
             >
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 mb-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-100 border border-cyan-200 mb-4">
                 <div className="text-cyan-700 dark:text-cyan-300">
                   {feature.icon}
                 </div>
@@ -338,7 +338,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
               whileHover={{ scale: 1.02 }}
               className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl p-4 text-center"
             >
-              <div className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent mb-1">
+              <div className="text-3xl font-bold text-foreground mb-1">
                 10,000+
               </div>
               <p className="text-sm text-muted-foreground">Movies Available</p>
@@ -347,7 +347,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
               whileHover={{ scale: 1.02 }}
               className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl p-4 text-center"
             >
-              <div className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent mb-1">
+              <div className="text-3xl font-bold text-foreground mb-1">
                 Real-time
               </div>
               <p className="text-sm text-muted-foreground">Match Detection</p>
@@ -356,7 +356,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
               whileHover={{ scale: 1.02 }}
               className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl p-4 text-center"
             >
-              <div className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent mb-1">
+              <div className="text-3xl font-bold text-foreground mb-1">
                 AI-Powered
               </div>
               <p className="text-sm text-muted-foreground">Recommendations</p>

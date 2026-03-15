@@ -60,7 +60,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
     return (
       <div className="flex-1 flex items-center justify-center p-6 relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5" />
+        <div className="absolute inset-0 bg-background" />
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -74,7 +74,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
           >
             🎭
           </motion.div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-foreground">
             No Matches Yet
           </h2>
           <p className="text-muted-foreground">
@@ -99,7 +99,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
   return (
     <div className="flex-1 overflow-y-auto p-6 relative">
       {/* Subtle background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+      <div className="absolute inset-0 bg-muted/20 pointer-events-none" />
       
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -108,10 +108,10 @@ export function MatchesView({ matches }: MatchesViewProps) {
           className="mb-6"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-100 border border-cyan-200">
               <Sparkles className="w-6 h-6 text-cyan-700 dark:text-cyan-300" />
             </div>
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold text-foreground">
               Your Matches
             </h2>
           </div>
@@ -194,7 +194,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -8 }}
-                className="bg-card/80 backdrop-blur-sm border rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group cursor-pointer"
+                className="bg-card border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group cursor-pointer"
                 onClick={() => setSelectedMovie(match.movie)}
               >
                 <div className="relative h-64 overflow-hidden">
@@ -203,7 +203,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
                     alt={match.movie.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-black/60" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                   
                   {/* Match badge */}
@@ -213,7 +213,7 @@ export function MatchesView({ matches }: MatchesViewProps) {
                     transition={{ type: "spring", delay: 0.1 + index * 0.05 }}
                     className="absolute top-3 left-3"
                   >
-                    <Badge className="bg-gradient-to-r from-cyan-600 to-teal-500 text-white border-0 shadow-lg">
+                    <Badge className="bg-primary text-primary-foreground border-0 shadow-md">
                       <Heart className="w-3 h-3 mr-1 fill-white" />
                       Match
                     </Badge>

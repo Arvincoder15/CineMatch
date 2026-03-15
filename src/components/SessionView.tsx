@@ -39,7 +39,7 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5 p-4">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background p-4">
       {/* Particle field background */}
       <ParticleField />
 
@@ -56,7 +56,7 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -69,7 +69,7 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-sky-100 rounded-full blur-3xl"
         />
       </div>
 
@@ -79,10 +79,10 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring" }}
-          className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-3xl shadow-2xl p-8 relative overflow-hidden"
+          className="bg-card border border-border rounded-3xl shadow-2xl p-8 relative overflow-hidden"
         >
           {/* Card glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-amber-500/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-muted/30 pointer-events-none" />
 
           <div className="relative z-10">
             {/* Header */}
@@ -97,11 +97,11 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
                   rotate: [0, 10, -10, 0]
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 mb-4"
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan-100 border border-cyan-200 mb-4"
               >
                 <Users className="w-8 h-8 text-cyan-700 dark:text-cyan-300" />
               </motion.div>
-              <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold mb-2 text-foreground">
                 Session Ready!
               </h2>
               <p className="text-muted-foreground">
@@ -115,16 +115,16 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="bg-gradient-to-br from-cyan-500/10 to-amber-500/10 border-2 border-cyan-500/20 rounded-xl p-6 text-center relative overflow-hidden"
+                className="bg-cyan-50 border-2 border-cyan-200 rounded-xl p-6 text-center relative overflow-hidden"
               >
                 <motion.div
                   animate={{ x: [0, 100, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent"
+                  className="absolute inset-0 bg-cyan-100/60"
                 />
                 <p className="text-muted-foreground mb-2 text-sm font-medium">Session Code</p>
                 <div className="flex items-center justify-center gap-2">
-                  <h1 className="tracking-[0.5em] text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+                  <h1 className="tracking-[0.5em] text-3xl font-bold text-foreground">
                     {session.code}
                   </h1>
                   <motion.button
@@ -189,7 +189,7 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
                           <div className="flex items-center gap-2 mb-1">
                             <p className="font-medium">{user.username}</p>
                             {user.id === currentUserId && (
-                              <Badge variant="default" className="text-xs bg-gradient-to-r from-cyan-600 to-teal-500">
+                              <Badge variant="default" className="text-xs bg-primary text-primary-foreground">
                                 You
                               </Badge>
                             )}
@@ -234,7 +234,7 @@ export function SessionView({ session: initialSession, currentUserId, onStartSwi
                 </p>
                 <Button
                   onClick={onStartSwiping}
-                  className="w-full h-12 font-semibold bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all"
+                  className="w-full h-12 font-semibold bg-primary text-primary-foreground hover:from-cyan-700 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all"
                   size="lg"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}

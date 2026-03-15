@@ -33,7 +33,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5 p-4">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background p-4">
       {/* Particle field background */}
       <ParticleField />
 
@@ -50,7 +50,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -63,7 +63,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-sky-100 rounded-full blur-3xl"
         />
       </div>
 
@@ -99,13 +99,13 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl blur-xl opacity-50"
+                className="absolute inset-0 bg-primary/25 rounded-2xl blur-xl opacity-50"
               />
-              <div className="relative bg-gradient-to-br from-cyan-600 to-teal-500 p-3 rounded-2xl">
+              <div className="relative bg-primary p-3 rounded-2xl">
                 <Film className="w-10 h-10 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-foreground">
               CineMatch
             </h1>
           </motion.div>
@@ -126,9 +126,9 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5, type: "spring" }}
         >
-          <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-3xl shadow-2xl p-6 relative overflow-hidden">
+          <div className="bg-card border border-border rounded-3xl shadow-2xl p-6 relative overflow-hidden">
             {/* Card glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-amber-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-muted/30 pointer-events-none" />
 
             <div className="relative z-10">
               <Tabs defaultValue="create" className="w-full">
@@ -147,7 +147,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
                     <motion.div
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 mb-6"
+                      className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-cyan-100 border border-cyan-200 mb-6"
                     >
                       <Users className="w-10 h-10 text-cyan-700 dark:text-cyan-300" />
                     </motion.div>
@@ -157,7 +157,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
                     </p>
                     <Button
                       onClick={onCreateSession}
-                      className="w-full h-12 font-semibold bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all"
+                      className="w-full h-12 font-semibold bg-primary hover:bg-primary/90 shadow-lg transition-all"
                       size="lg"
                       onMouseEnter={() => setIsHovered(true)}
                       onMouseLeave={() => setIsHovered(false)}
@@ -185,7 +185,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
                         <motion.div
                           animate={{ rotate: [0, -10, 10, 0] }}
                           transition={{ duration: 3, repeat: Infinity }}
-                          className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 mb-6"
+                          className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-sky-100 border border-sky-200 mb-6"
                         >
                           <LogIn className="w-10 h-10 text-blue-600 dark:text-blue-400" />
                         </motion.div>
@@ -223,7 +223,7 @@ export function SessionSetup({ username, onCreateSession, onJoinSession, backend
 
                       <Button
                         type="submit"
-                        className="w-full h-12 font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg hover:shadow-xl transition-all"
+                        className="w-full h-12 font-semibold bg-primary hover:bg-primary/90 shadow-lg transition-all"
                         size="lg"
                         disabled={joinCode.length !== 6}
                       >

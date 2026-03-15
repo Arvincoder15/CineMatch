@@ -140,13 +140,13 @@ export function AIChat({ likedMovies }: AIChatProps) {
   ];
 
   return (
-    <Card className="flex flex-col h-[600px] bg-card/80 backdrop-blur-xl border-border/50 overflow-hidden">
+    <Card className="flex flex-col h-[600px] bg-card border-border overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b flex items-center gap-3 bg-gradient-to-r from-cyan-500/5 to-amber-500/5 shrink-0">
+      <div className="p-4 border-b flex items-center gap-3 bg-muted/40 shrink-0">
         <motion.div
           animate={{ rotate: [0, 360] }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-cyan-100 border border-cyan-200 flex items-center justify-center"
         >
           <Bot className="w-6 h-6 text-cyan-700" />
         </motion.div>
@@ -201,8 +201,8 @@ export function AIChat({ likedMovies }: AIChatProps) {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                       message.role === 'ai' 
-                        ? 'bg-gradient-to-br from-cyan-500/20 to-teal-500/20' 
-                        : 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20'
+                        ? 'bg-cyan-100 border border-cyan-200' 
+                        : 'bg-sky-100 border border-sky-200'
                     }`}
                   >
                     {message.role === 'ai' ? (
@@ -217,7 +217,7 @@ export function AIChat({ likedMovies }: AIChatProps) {
                     className={`max-w-[80%] rounded-lg px-4 py-2 ${
                       message.role === 'ai'
                         ? 'bg-muted'
-                        : 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                        : 'bg-primary text-primary-foreground'
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -231,7 +231,7 @@ export function AIChat({ likedMovies }: AIChatProps) {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex gap-3"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-cyan-100 border border-cyan-200 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 text-cyan-700" />
                 </div>
                 <div className="bg-muted rounded-lg px-4 py-2">
@@ -262,7 +262,7 @@ export function AIChat({ likedMovies }: AIChatProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => void sendMessage(action.query)}
-                className="text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-amber-500/10 border border-cyan-500/20 hover:border-cyan-500/40 transition-colors"
+                className="text-xs px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 hover:border-cyan-300 transition-colors"
               >
                 {action.label}
               </motion.button>
@@ -272,7 +272,7 @@ export function AIChat({ likedMovies }: AIChatProps) {
       )}
 
       {/* Input */}
-      <div className="p-4 border-t bg-gradient-to-r from-cyan-500/5 to-amber-500/5 shrink-0">
+      <div className="p-4 border-t bg-muted/40 shrink-0">
         <div className="flex gap-2">
           <Input
             value={input}
@@ -287,7 +287,7 @@ export function AIChat({ likedMovies }: AIChatProps) {
               onClick={handleSend} 
               disabled={isLoading || !input.trim()} 
               size="icon"
-              className="h-11 w-11 bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600"
+              className="h-11 w-11 bg-primary hover:bg-primary/90"
             >
               <Send className="w-4 h-4" />
             </Button>

@@ -15,8 +15,6 @@ export function AIView({ likedMovies, allMovies }: AIViewProps) {
   return (
     <main className="flex-1 w-full overflow-auto relative">
       {/* Subtle background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-amber-500/5 pointer-events-none" />
-      
       <div className="max-w-6xl mx-auto px-6 py-8 relative z-10">
         {/* Header */}
         <motion.div
@@ -31,12 +29,12 @@ export function AIView({ likedMovies, allMovies }: AIViewProps) {
                 rotate: [0, 5, -5, 0]
               }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/20 to-teal-500/20"
+              className="p-3 rounded-xl bg-cyan-100 border border-cyan-200"
             >
               <Sparkles className="w-6 h-6 text-cyan-700 dark:text-cyan-300" />
             </motion.div>
             <div>
-              <h2 className="mb-0 text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+              <h2 className="mb-0 text-3xl font-bold text-foreground">
                 AI-Powered Insights
               </h2>
               <p className="text-muted-foreground mt-1">
@@ -52,7 +50,7 @@ export function AIView({ likedMovies, allMovies }: AIViewProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Alert className="mb-6 border-cyan-500/20 bg-cyan-500/5">
+            <Alert className="mb-6 border-cyan-300 bg-cyan-50">
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -87,7 +85,7 @@ export function AIView({ likedMovies, allMovies }: AIViewProps) {
             className="space-y-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-500/20 to-teal-500/20">
+              <div className="p-2 rounded-lg bg-cyan-100 border border-cyan-200">
                 <TrendingUp className="w-5 h-5 text-cyan-700 dark:text-cyan-300" />
               </div>
               <h3 className="mb-0 font-semibold text-xl">Your Recommendations</h3>
@@ -109,7 +107,7 @@ export function AIView({ likedMovies, allMovies }: AIViewProps) {
               <motion.div
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20"
+                className="p-2 rounded-lg bg-sky-100 border border-sky-200"
               >
                 <MessageSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </motion.div>

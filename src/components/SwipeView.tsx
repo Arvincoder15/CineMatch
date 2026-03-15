@@ -135,7 +135,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
     return (
       <div className="flex-1 flex items-center justify-center p-6 relative overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5" />
+        <div className="absolute inset-0 bg-background" />
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -149,7 +149,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
           >
             🎬
           </motion.div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-foreground">
             You've Seen All Movies!
           </h2>
           <p className="text-muted-foreground">
@@ -160,7 +160,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
               onClick={handleRestart} 
               variant="outline" 
               size="lg"
-              className="hover:bg-cyan-500/10 hover:border-cyan-500"
+              className="hover:bg-accent"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               Start Over
@@ -170,7 +170,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="p-4 bg-card/50 backdrop-blur-sm border rounded-xl"
+            className="p-4 bg-card border rounded-xl"
           >
             <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
@@ -187,7 +187,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 relative">
       {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-muted/20 pointer-events-none" />
       
       <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         {/* Session info and controls */}
@@ -302,7 +302,7 @@ export function SwipeView({ movies, onSwipe, sessionCode, sessionMemberCount, ma
               onClick={handleUndo}
               variant="outline"
               size="icon"
-              className="w-12 h-12 rounded-full hover:bg-cyan-500/10 hover:border-cyan-500"
+              className="w-12 h-12 rounded-full hover:bg-accent"
               disabled={swipeHistory.length === 0}
               title="Undo (U)"
             >

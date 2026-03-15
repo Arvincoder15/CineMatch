@@ -51,7 +51,7 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-cyan-500/5 via-background to-amber-500/5 p-4">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background p-4">
       {/* Particle field background */}
       <ParticleField />
 
@@ -68,7 +68,7 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -81,7 +81,7 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
             repeat: Infinity,
             ease: "linear"
           }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-sky-100 rounded-full blur-3xl"
         />
       </div>
 
@@ -91,10 +91,10 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring" }}
-          className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-3xl shadow-2xl p-8 relative overflow-hidden"
+          className="bg-card border border-border rounded-3xl shadow-2xl p-8 relative overflow-hidden"
         >
           {/* Card glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-amber-500/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-muted/30 pointer-events-none" />
 
           <div className="relative z-10">
             {/* Header */}
@@ -107,11 +107,11 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
               <motion.div
                 animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 mb-4"
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan-100 border border-cyan-200 mb-4"
               >
                 <Sparkles className="w-8 h-8 text-cyan-700 dark:text-cyan-300" />
               </motion.div>
-              <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-cyan-700 to-teal-500 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold mb-2 text-foreground">
                 What's Your Movie Taste?
               </h2>
               <p className="text-muted-foreground">
@@ -211,7 +211,7 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
                       {selectedVibe === vibe.id && (
                         <motion.div
                           layoutId="vibe-highlight"
-                          className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${vibe.color}`}
+                          className={`absolute left-0 top-0 bottom-0 w-1 bg-cyan-400`}
                         />
                       )}
                       <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ export function GenrePreferences({ onComplete, sessionCode }: GenrePreferencesPr
               >
                 <Button
                   onClick={handleComplete}
-                  className="w-full h-12 font-semibold bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-700 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all"
+                  className="w-full h-12 font-semibold bg-primary hover:bg-primary/90 shadow-lg transition-all"
                   size="lg"
                   disabled={selectedGenres.length === 0 || !selectedVibe}
                   onMouseEnter={() => setIsHovered(true)}
