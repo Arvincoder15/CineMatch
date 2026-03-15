@@ -1,94 +1,98 @@
-# CineMatch
+# 🎬 CineMatch
 
-CineMatch is a collaborative movie matching app built with React and Vite. It lets people create a session, invite friends, swipe through movies, compare taste, and use AI chat for movie recommendations.
+Find a movie everyone actually wants to watch.
 
-## What It Does
+CineMatch is a collaborative movie-matching app built with React and Vite. Create a session, invite friends, swipe through movies together, get shared matches, and chat with AI for better recommendations.
 
-- Create or join collaborative movie sessions
-- Swipe through movies and find shared matches
-- Sync session state across devices with Supabase when configured
-- Chat with Gemini for taste-aware movie conversation when configured
-- Pull live movie data from TMDB when configured
-- Fall back to local mode when remote services are unavailable
+## ✨ Highlights
 
-## Stack
+- 🎞️ Swipe through movies with a fast, app-like interface
+- 👥 Create shared sessions with friends
+- 💘 See mutual matches when multiple users like the same movie
+- 🤖 Chat with Gemini for taste-aware movie suggestions
+- 🔄 Sync sessions across devices with Supabase
+- 🌗 Light and dark theme support
+- 🛟 Local fallback mode when backend services are not configured
+
+## 🧰 Tech Stack
 
 - React 18
 - Vite 6
 - TypeScript
 - Radix UI
 - Motion
-- Supabase Edge Functions and Realtime
+- Supabase Edge Functions + Realtime
 - TMDB API
 - Google Gemini API
 
-## Setup
+## 🚀 Getting Started
 
-### Install
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### Configure environment variables
-
-Create a `.env` file from `.env.example`:
+### 2. Create your environment file
 
 ```bash
 cp .env.example .env
 ```
 
-Supported variables:
+### 3. Add your environment variables
 
-- `VITE_TMDB_API_KEY` for live TMDB movie data
-- `VITE_GEMINI_API_KEY` for Gemini chat
-- `VITE_SUPABASE_PROJECT_ID` for cross-device session sync
-- `VITE_SUPABASE_ANON_KEY` for frontend access to Supabase
+```env
+VITE_TMDB_API_KEY=
+VITE_GEMINI_API_KEY=
+VITE_SUPABASE_PROJECT_ID=
+VITE_SUPABASE_ANON_KEY=
+```
 
-### Run locally
+### 4. Start the development server
 
 ```bash
 npm run dev
 ```
 
-### Production build
+### 5. Build for production
 
 ```bash
 npm run build
 ```
 
-## Service Behavior
+## 🔐 Environment Variables
 
-### TMDB
+| Variable | Purpose |
+| --- | --- |
+| `VITE_TMDB_API_KEY` | Enables live movie data from TMDB |
+| `VITE_GEMINI_API_KEY` | Enables Gemini-powered AI chat |
+| `VITE_SUPABASE_PROJECT_ID` | Connects the app to your Supabase project |
+| `VITE_SUPABASE_ANON_KEY` | Enables frontend access to Supabase services |
 
-Without a TMDB key, the app can still run, but live movie fetching will not be available until a key is added through `.env` or the in-app API settings.
+## 🧠 How The App Behaves Without Keys
 
-### Gemini
+- Without `VITE_TMDB_API_KEY`, live TMDB movie fetching is unavailable until a key is added.
+- Without `VITE_GEMINI_API_KEY`, AI chat falls back to local responses.
+- Without Supabase config, sessions work in local-only mode and will not sync across devices.
 
-Without a Gemini key, the AI chat falls back to local responses. A user can also provide a Gemini key inside the app, and it will stay in that browser only.
+## ☁️ Supabase Deployment
 
-### Supabase
+This project expects a Supabase edge function named `make-server-ec9c6d6c`.
 
-Without Supabase config, the app falls back to local-only sessions. For real cross-device collaboration, configure the Supabase variables and deploy the edge function.
-
-## Supabase Deployment
-
-This app expects the session backend edge function named `make-server-ec9c6d6c`.
-
-Example:
+Deploy it with:
 
 ```bash
 supabase functions deploy make-server-ec9c6d6c
 ```
 
-## Security Notes
+## 🛡️ Security Notes
 
-- Secrets are loaded from environment variables instead of being stored in source files.
+- Secrets are loaded from environment variables, not stored in source code.
 - `.env` files are ignored by Git.
-- User-provided API keys entered in the UI are stored in browser local storage only.
-- If any old keys were previously committed, rotate them before publishing the repository.
+- User-provided API keys entered in the app are stored in browser local storage only.
+- If any keys were previously committed, rotate them before publishing or sharing the repository.
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 .
@@ -103,10 +107,14 @@ supabase functions deploy make-server-ec9c6d6c
 └── vite.config.ts
 ```
 
-## GitHub Readiness Checklist
+## ✅ GitHub Checklist
 
 - Fill in `.env` locally
 - Keep `.env` untracked
-- Rotate any keys that were exposed earlier
+- Rotate any previously exposed keys
 - Run `npm run build`
 - Push to GitHub
+
+## 🎥 Summary
+
+CineMatch is built to make group movie decisions less painful: swipe fast, compare taste, sync live, and let AI help break the tie.
